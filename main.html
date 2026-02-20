@@ -126,7 +126,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>To make this project clear and concise, I have organized it into multiple different parts which are contained into their associated function. The first two steps are to load the dataset and clean it to make it easier to work with. Next to generate the workout planner I created a function that categorizes the tempo (BPM) of the dances into three different groups (Slow, Medium, and Fast). The fourth step is to get the user input while simultaneously filtering the dataset based on the users preferences. The final step is to generate a workout plan based on the filtered dataset and the user preferences. Afterwards, the workout plan is printed while also dealing with consecutive duplicate dances that might occur in the workout.</p>
 <section id="loading-and-cleaning-the-dataset" class="level3">
 <h3 class="anchored" data-anchor-id="loading-and-cleaning-the-dataset">Loading and Cleaning the Dataset</h3>
-<div id="17063895" class="cell" data-execution_count="1">
+<div id="bb0d68db" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_data() <span class="op">-&gt;</span> pd.DataFrame:</span>
@@ -142,14 +142,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="cleaning" class="level5">
 <h5 class="anchored" data-anchor-id="cleaning">Cleaning</h5>
 <p>When creating visualizations like bar graphs and histograms I came across a few problems which could only be solved with some data cleaning. For example, when I was creating a bar graph that showed the number of dances per country of origin, I noticed that there were two categories for the same country. The categories “USA” and “United States” were both present in the dataset which caused inaccurate grouping of dances and their respective countries.</p>
-<div id="627da2f4" class="cell" data-execution_count="2">
+<div id="6df60663" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'Origin'</span>] <span class="op">=</span> df[<span class="st">'Origin'</span>].replace(<span class="st">'USA'</span>, <span class="st">'United States'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>To fix this problem, I utilized the <em>replace</em> function which replaces all instances of “USA” in the dataset with “United States”.</p>
-<div id="359aa65b" class="cell" data-execution_count="3">
+<div id="aaf3d22d" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"Associated Music Genre"</span>] <span class="op">=</span> df[<span class="st">"Associated Music Genre"</span>].<span class="bu">str</span>.lower()</span>
@@ -159,7 +159,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <p>The second problem I came across when generating a histogram to visualize the distribution of associated music genres was that there were variations in the names of the same music genres. One example is that there were two different genres for the Latin music genre, “Latin music” and “Latin”. Using the <em>str.lower</em> function to convert all of the music genres to lowercase helped by making the data more uniform and therefore easier to work with. Additionally, for the replacement I used a regular expression (<em>regex</em>) to remove the words “music” and “dance” from the music genres and to remove any white spaces before and after the words “music” and “dance”.</p>
-<div id="ea153ce9" class="cell" data-execution_count="4">
+<div id="bbaea358" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'Associated Music Genre'</span>] <span class="op">=</span> df[<span class="st">'Associated Music Genre'</span>].replace({<span class="st">'hip-hop'</span>: <span class="st">'hip hop'</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -169,12 +169,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="visaulizations" class="level4">
 <h4 class="anchored" data-anchor-id="visaulizations">Visaulizations</h4>
-<p>To get a better understanding of the dataset I used in this project I created a few visualizations. To make my script more organized I created two functions which were outsourced to a second file which contained most of the visualization code. The functions allowed me to plot the data easily by importing and calling them from the main file. I plotted primarily bar graphs and histograms to visualize the number of dances per country, dance type, and associated music genre. F</p>
+<p>To get a better understanding of the dataset I used in this project I created a few visualizations. To make my script more organized I created two functions which were outsourced to a second file which contained most of the visualization code. The functions allowed me to plot the data easily by importing and calling them from the main file. I plotted primarily bar graphs and histograms to visualize the number of dances per country, dance type, and associated music genre. Lastly, some of the axis in the plots use a logrithmic scale to make the data easier to visualize and understand.</p>
 </section>
 <section id="tempo-categorization" class="level4">
 <h4 class="anchored" data-anchor-id="tempo-categorization">Tempo Categorization</h4>
 <p>To divide the tempos of the dances into three different categories for the workout planner, I first used a t-test to see if the BPM is normally distributed. I created a bar graph to visualize the tempos and how many times they occurred in the dataset (Frequency). I inserted background colors onto the graph to visualize the cutoffs of tempo categories. Based on the p-value to test for normality (1.097e-06) and the bargraph on the right, you can see that the distribution of tempos among dances is not equally distributed with a peak at 120 BPM and is skewed to the right. This indicates that the most of the tempos are clustered at 120 BPM and that the majority of the remaining data is concentrated between 125-180 BPM.</p>
-<div id="909c0a4b" class="cell" data-execution_count="5">
+<div id="d523e38b" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>mean <span class="op">=</span> df[<span class="st">'Tempo (BPM)'</span>].mean()</span>
@@ -203,7 +203,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="user-input" class="level4">
 <h4 class="anchored" data-anchor-id="user-input">User Input</h4>
-<div id="46c9a3e1" class="cell" data-execution_count="6">
+<div id="68e22b8c" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> user_numeric_input(prompt, min_value, max_value) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
@@ -232,7 +232,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="filtering-the-dataset-based-on-user-preferences" class="level4">
 <h4 class="anchored" data-anchor-id="filtering-the-dataset-based-on-user-preferences">Filtering the Dataset Based on User Preferences</h4>
-<div id="dbafff7d" class="cell" data-execution_count="7">
+<div id="dd690a3b" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> filter_dataset_by_user_preferences(df) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
@@ -261,7 +261,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="workout-generation" class="level4">
 <h4 class="anchored" data-anchor-id="workout-generation">Workout Generation</h4>
-<div id="e3460c8e" class="cell" data-execution_count="8">
+<div id="a9e16db1" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _, row <span class="kw">in</span> df_filtered.iterrows():</span>
@@ -277,7 +277,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="output" class="level4">
 <h4 class="anchored" data-anchor-id="output">Output</h4>
-<div id="44d5c4c3" class="cell" data-execution_count="9">
+<div id="d3671888" class="cell" data-execution_count="9">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>workout <span class="op">=</span> connect_consecutive_duplicate_dances(workout)</span>

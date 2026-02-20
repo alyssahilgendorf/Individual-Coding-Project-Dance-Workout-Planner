@@ -108,7 +108,7 @@ def filter_dataset_by_user_preferences(df) -> pd.DataFrame | dict: # returns the
 
 def generate_workout(df, country, intensity_level, duration) -> pd.DataFrame:    
     
-    if df_filtered.empty:
+    if df.empty:
         print("No dances found for the selected country and intensity level.")
         return
     
@@ -118,9 +118,9 @@ def generate_workout(df, country, intensity_level, duration) -> pd.DataFrame:
 
     while total_duration < duration: # total duration is the combined duration of the selected dances, duration is the user input
 
-        df_filtered = df_filtered.sample(frac=1, random_state=11)  # Shuffle the filtered dataframe
+        df = df.sample(frac=1, random_state=11)  # Shuffle the filtered dataframe
 
-        for _, row in df_filtered.iterrows(): # go through each row of dataframe 
+        for _, row in df.iterrows(): # go through each row of dataframe 
             if total_duration >= duration: # if workout duration is met, the for loop is broken
                 break
 

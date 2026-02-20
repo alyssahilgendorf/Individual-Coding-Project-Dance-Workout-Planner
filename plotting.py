@@ -14,7 +14,7 @@ def plot_histogramm(df, column, column_name, bins=20):
 # Bar chart of number of dances per country - change later
 def plot_counts(df, column, column_name, log_scale=True):
     country_counts = df[column].value_counts()
-    country_counts.plot(kind='hist', color = 'skyblue', edgecolor='blue')
+    country_counts.plot(kind='bar', color = 'skyblue', edgecolor='blue')
     if log_scale:
         plt.yscale('log')
     plt.title(f"Number of Dances per {column_name}")

@@ -38,12 +38,3 @@ def plot_tempo_distribution_with_categories(df, low_cutoff, high_cutoff):
     plt.show()
 
 
-# # Plotting the distribution of difficulty scores
-# def plot_difficulty_distribution(df):
-#     plt.figure(figsize=(10, 6))
-#     plt.hist(df["Difficulty Score"], bins=20, color='lavender', edgecolor='purple')
-#     plt.title("Distribution of Dance Difficulty Scores")
-#     plt.xlabel("Difficulty Score")
-#     plt.ylabel("Frequency")
-#     plt.show()
-

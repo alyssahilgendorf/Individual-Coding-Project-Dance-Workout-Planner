@@ -65,7 +65,15 @@ Another issue I came across was that there were two different genres for hip hop
 To get a better understanding of the dataset I used in this project I created a few visualizations. To make my script more organized I created two functions which were outsourced to a second file which contained most of the visualization code. The functions allowed me to plot the data easily by importing and calling them from the main file. I plotted primarily bar graphs and histograms to visualize the number of dances per country, dance type, and associated music genre. F
 
 #### Tempo Categorization
-To divide the tempos of the dances into three different categories for the workout planner, I first used a t-test to see if the BPM is normally distributed. I created a bar graph to visualize the Tempos and how many times they occurred in the dataset (Frequency). I inserted background colors onto the graph to visualize the cutoffs of tempo categories. Based on the p-value to test for normality (1.097e-06) and Figure 1, you can see that the distribution of tempos among dances is not equally distributed with a peak at 120 BPM and is skewed to the right. This indicates that the most of the tempos are clustered at 120 BPM and that the majority of the remaining data is concentrated between 125-180 BPM. At first, I tried categorizing the tempos using mean and standard deviation, however, with the skewed data, the different tempos are not equally distributed into the three categories (Low Tempo, Medium Tempo, and High Tempo). There were too many tempos assigned to the Medium category, with too few tempos assigned to the Low and High categories. In efforts to distribute the tempos into the three categories, I used quantiles to divide the tempos into their respective categories. 
+To divide the tempos of the dances into three different categories for the workout planner, I first used a t-test to see if the BPM is normally distributed. I created a bar graph to visualize the Tempos and how many times they occurred in the dataset (Frequency). I inserted background colors onto the graph to visualize the cutoffs of tempo categories. Based on the p-value to test for normality (1.097e-06) and Figure 1, you can see that the distribution of tempos among dances is not equally distributed with a peak at 120 BPM and is skewed to the right. This indicates that the most of the tempos are clustered at 120 BPM and that the majority of the remaining data is concentrated between 125-180 BPM.
+```{python}
+mean = df['Tempo (BPM)'].mean()
+std = df['Tempo (BPM)'].std()
+
+low_cutoff = mean - std
+high_cutoff = mean + std
+```
+ At first, I tried categorizing the tempos using mean and standard deviation, however, with the skewed data, the different tempos are not equally distributed into the three categories (Low Tempo, Medium Tempo, and High Tempo). There were too many tempos assigned to the Medium category, with too few tempos assigned to the Low and High categories. In efforts to distribute the tempos into the three categories, I used quantiles to divide the tempos into their respective categories. 
 
 Mean Std                   |  Quantiles
 :-------------------------:|:-------------------------:

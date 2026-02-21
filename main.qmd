@@ -7,6 +7,7 @@ format:
         code-fold: true
     gfm:
         code-fold: true
+        embed-resources: true
 
 editor: visual
 jupyter: python3

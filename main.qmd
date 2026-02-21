@@ -3,8 +3,11 @@ title: "Dance Workout Planner"
 author: "Alyssa Hilgendorf"
 date: "2/20/2026"
 format:
-   html:
-     code-fold: true
+    html:
+        code-fold: true
+    gfm:
+        code-fold: true
+
 editor: visual
 jupyter: python3
 ---

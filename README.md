@@ -1,3 +1,406 @@
-# Individual-Coding-Project-Dance-Workout-Planner
+# Dance Workout Planner
+Alyssa Hilgendorf
+2026-02-20
 
-Install libraries with: python -m pip install -r requriments.txt
+## Motivation and Rationale for a Dance Workout Planner
+
+For my final project, I wanted to create something that would be
+associated with one of my hobbies to make it a more fun and engaging
+project. Although I studied a healthcare related degree in my bachelor’s
+and now my masters, which I do enjoy, I have other passions like dance
+which I have had professional training for 18 years. In these 18 years I
+have been trained in classic styles such as ballet, tap, jazz, and
+modern, however, In recent years I have taken world dance classes which
+provided me with the inspiration for the dataset I chose for this
+project. Using a dataset that includes dance styles from around the
+world containing educational aspects about each style is both
+interesting for me and the user of this interactive dance workout
+planner. With starting my project in the new year, many, including
+myself, have made fitness related resolutions and this planner is a fun
+way to get in shape while also learning something new.
+
+## About the Dataset and Goal of the Workout Planner
+
+This dataset obtained from Kaggle contains 207 different styles of
+dances from around the world. Each dance style contains a variety of 18
+different categories of information such as the country of origin, tempo
+in beats per minute (BPM), associated music genre, and learning
+difficulty. In this project I primarily focused on the country of
+origin, music genre, and tempo (BPM) to create a workout planner that
+recommends various different dance styles based on the users’
+preferences. I will dive deeper into how the dance workout planner works
+in the following sections as well as explain why I chose to use some
+methods over others.
+
+## General Project Structure
+
+To make this project clear and concise, I have organized it into
+multiple different parts which are contained into their associated
+function. The first two steps are to load the dataset and clean it to
+make it easier to work with. Next to generate the workout planner I
+created a function that categorizes the tempo (BPM) of the dances into
+three different groups (Slow, Medium, and Fast). The fourth step is to
+get the user input while simultaneously filtering the dataset based on
+the users preferences. The final step is to generate a workout plan
+based on the filtered dataset and the user preferences. Afterwards, the
+workout plan is printed while also dealing with consecutive duplicate
+dances that might occur in the workout.
+
+## Installation of Libraries
+
+To install the necessary libraries use the following command:
+
+``` {bash}
+python -m pip install -r requirements.txt
+```
+
+### Loading and Cleaning the Dataset
+
+<details class="code-fold">
+<summary>Code</summary>
+
+``` python
+from functions import *
+df = load_data()
+```
+
+</details>
+
+##### Loading
+
+The first step is to load the dataset using pandas. I used the
+*read_csv* function to load my dance dataset and printed the first 10
+rows with the *head* to get a better understanding of the data. The
+function then returns the dataframe which is used in the next steps of
+the project.
+
+##### Cleaning
+
+When creating visualizations like bar graphs and histograms I came
+across a few problems which could only be solved with some data
+cleaning. For example, when I was creating a bar graph that showed the
+number of dances per country of origin, I noticed that there were two
+categories for the same country. The categories “USA” and “United
+States” were both present in the dataset which caused inaccurate
+grouping of dances and their respective countries.
+
+<details class="code-fold">
+<summary>Code</summary>
+
+``` python
+sel = df["Origin"].isin(["USA", "United States"])
+print(df[sel]["Origin"].value_counts())
+
+cleaned_df = data_cleaning(df)
+print("#########  After cleaning: #########")
+print(cleaned_df[sel]["Origin"].value_counts())
+```
+
+</details>
+
+    Origin
+    United States    135
+    USA                2
+    Name: count, dtype: int64
+    #########  After cleaning: #########
+    Origin
+    United States    137
+    Name: count, dtype: int64
+
+To fix this problem, I utilized the *replace* function which replaces
+all instances of “USA” in the dataset with “United States”.
+
+<details class="code-fold">
+<summary>Code</summary>
+
+``` python
+sel = df["Associated Music Genre"].str.contains("latin", case=False)
+print(df[sel]["Associated Music Genre"].value_counts())
+
+cleaned_df = data_cleaning(df)
+print("#########  After cleaning: #########")
+print(cleaned_df[sel]["Associated Music Genre"].value_counts())
+```
+
+</details>
+
+    Associated Music Genre
+    Latin music    22
+    Latin          15
+    Name: count, dtype: int64
+    #########  After cleaning: #########
+    Associated Music Genre
+    latin    37
+    Name: count, dtype: int64
+
+The second problem I came across when generating a histogram to
+visualize the distribution of associated music genres was that there
+were variations in the names of the same music genres. One example is
+that there were two different genres for the Latin music genre, “Latin
+music” and “Latin”. Using the *str.lower* function to convert all of the
+music genres to lowercase helped by making the data more uniform and
+therefore easier to work with. Additionally, for the replacement I used
+a regular expression (*regex*) to remove the words “music” and “dance”
+from the music genres and to remove any white spaces before and after
+the words “music” and “dance”.
+
+<details class="code-fold">
+<summary>Code</summary>
+
+``` python
+sel = df["Associated Music Genre"].isin(["Hip-hop", "Hip hop"])
+print(df[sel]["Associated Music Genre"].value_counts())
+
+cleaned_df = data_cleaning(df)
+print("#########  After cleaning: #########")
+print(cleaned_df[sel]["Associated Music Genre"].value_counts())
+```
+
+</details>
+
+    Associated Music Genre
+    Hip hop    37
+    Hip-hop     4
+    Name: count, dtype: int64
+    #########  After cleaning: #########
+    Associated Music Genre
+    hip hop    41
+    Name: count, dtype: int64
+
+Another issue I came across was that there were two different genres for
+hip hop, “hip-hop” and “hip hop”. To fix this problem, I used the
+*replace* function which replaces all instances of “hip-hop” in the
+dataset with “hip hop”.
+
+#### Visualizations
+
+To get a better understanding of the dataset I used in this project I
+created a few visualizations. To make my script more organized I created
+two functions which were outsourced to a second file which contained
+most of the visualization code. The functions allowed me to plot the
+data easily by importing and calling them from the main file. I plotted
+primarily bar graphs and histograms to visualize the number of dances
+per country, dance type, and associated music genre. Lastly, some of the
+axis in the plots use a logrithmic scale to make the data easier to
+visualize and understand.
+
+<details class="code-fold">
+<summary>Code</summary>
+
+``` python
+# Uses the function from plotting.py to plot the distribution of dance origins, dance types and music genres in the dataset
+plot_counts(cleaned_df, "Origin", "Country", log_scale=True)
+plot_counts(cleaned_df, "Dance Type", "Dance Type")
+plot_counts(cleaned_df, "Associated Music Genre", "Music Genre", threshold=2)
+```
+
+</details>
+
+![](main_files/figure-commonmark/cell-6-output-1.png)
+
+![](main_files/figure-commonmark/cell-6-output-2.png)
+
+![](main_files/figure-commonmark/cell-6-output-3.png)
+
+#### Tempo Categorization
+
+To divide the tempos of the dances into three different categories for
+the workout planner, I first used a t-test to see if the BPM is normally
+distributed. I created a bar graph to visualize the tempos and how many
+times they occurred in the dataset (Frequency). I inserted background
+colors onto the graph to visualize the cutoffs of tempo categories.
+Based on the p-value to test for normality (1.097e-06) and the bottom
+bargraph, you can see that the distribution of tempos among dances is
+not equally distributed with a peak at 120 BPM and is skewed to the
+right. This indicates that the most of the tempos are clustered at 120
+BPM and that the majority of the remaining data is concentrated between
+125-180 BPM.
+
+<details class="code-fold">
+<summary>Code</summary>
+
+``` python
+# t test if speed of bpm is normally distributed
+bpm = df["Tempo (BPM)"]
+k2, p = stats.normaltest(bpm)
+print(f"p-value for normality test: {p}")
+if p < 0.05:
+    print("The distribution of BPM is not normal.")
+
+df = tempo_categorization(cleaned_df)
+
+print(df["Tempo Category"].value_counts())
+```
+
+</details>
+
+    p-value for normality test: 1.0969248052854384e-06
+    The distribution of BPM is not normal.
+    Tempo Category
+    Medium    122
+    Fast       70
+    Slow       14
+    Name: count, dtype: int64
+
+At first, I tried categorizing the tempos using mean and standard
+deviation, however, with the skewed data, the different tempos are not
+equally distributed into the three categories (Low Tempo, Medium Tempo,
+and High Tempo). There were too many tempos assigned to the Medium
+category, with too few tempos assigned to the Low and High categories.
+
+<details class="code-fold">
+<summary>Code</summary>
+
+``` python
+mean = df['Tempo (BPM)'].mean()
+std = df['Tempo (BPM)'].std()
+
+low_cutoff = mean - std
+high_cutoff = mean + std
+
+plot_tempo_distribution_with_categories(df, low_cutoff, high_cutoff)
+```
+
+</details>
+
+![](main_files/figure-commonmark/cell-8-output-1.png)
+
+In efforts to distribute the tempos into the three categories, I used
+quantiles to divide the tempos into their respective categories.
+
+<details class="code-fold">
+<summary>Code</summary>
+
+``` python
+low_cutoff = df['Tempo (BPM)'].quantile(0.33) 
+high_cutoff = df['Tempo (BPM)'].quantile(0.66)
+
+plot_tempo_distribution_with_categories(df, low_cutoff, high_cutoff)
+```
+
+</details>
+
+![](main_files/figure-commonmark/cell-9-output-1.png)
+
+#### User Input
+
+The user input in the workout planner utilizes two different functions
+to obtain user preference. The first function requests the user to enter
+a number within a certain range while the second function prints a list
+of choices with a corresponding number which then uses the first
+function to acquire the option the user chose. During this, the input
+checks are made to ensure the correct data is in the system (e.g. just
+numeric input and is within a certain range).
+
+#### Filtering the Dataset Based on User Preferences
+
+First the user is asked how long they would like their workout to be
+(workout duration) using the first input function as described above.
+Next, the user is instructed to select the intensity level of their
+workout using the second input function which is described above as
+well. Following the users desired level of intensity, the dances are
+filtered to only contain dances where the determined tempo category
+matches the intensity level (e.g. slow tempo is matched to low
+intensity). Afterwards, the user is able to choose a country from a list
+of countries which contain dances with the chosen level of intensity.
+The data is then filtered again for the chosen country. The function
+returns the filtered data frame as well as the user preferences.
+
+#### Workout Generation
+
+<details class="code-fold">
+<summary>Code</summary>
+
+``` python
+# example of filterd df
+filtered_df = df[(df["Tempo Category"] == "Slow") & (df["Origin"] == "United States")]
+
+# example prefs
+prefs = {"duration": 20, "intensity_level": 0, "country": "United States"}
+
+workout = generate_workout(filtered_df, prefs["intensity_level"], prefs["duration"])
+print(workout)
+```
+
+</details>
+
+    [('Electric boogaloo', 5), ('Salsa', 5), ('Liturgical dance', 5), ('Conga line', 5)]
+
+<details class="code-fold">
+<summary>Code</summary>
+
+``` python
+# example of filterd df
+filtered_df_consecutive_duplicates = df[(df["Tempo Category"] == "Slow") & (df["Origin"] == "Brazil")]
+
+# example prefs
+prefs_consecutive_duplicates = {"duration": 20, "intensity_level": 0, "country": "Brazil"}
+
+workout_consecutive_duplicates = generate_workout(filtered_df_consecutive_duplicates, prefs_consecutive_duplicates["intensity_level"], prefs_consecutive_duplicates["duration"])
+print(workout_consecutive_duplicates)
+```
+
+</details>
+
+    Not enough dances available to fill the desired duration. Filling remaining time with available dances. Duplicates may occur.
+    [('Samba enredo', 5), ('Samba enredo', 5), ('Samba enredo', 5), ('Samba enredo', 5)]
+
+Depending on the chosen workout duration, the dances are added to the
+*selected_dances* list as long as the duration of the selected dances is
+lower than the desired user workout duration. The duration of each dance
+is determined by the users chosen intensity level. A low intensity (slow
+dances with slow tempo) means longer durations for each dance. If there
+are not enough dances of the desired intensity level are available for a
+certain country, then dances are selected multiple times. Above you can
+see example code of the users inputted duration, intensity level, and
+country as well as the generated workout plan. In the second example
+above you can see what happens when there are not enough dances to fill
+the users desired intensity level and country. In this case, the same
+dance is selected multiple times to fill the workout duration.
+
+#### Output
+
+<details class="code-fold">
+<summary>Code</summary>
+
+``` python
+print_workout(workout)
+```
+
+</details>
+
+    Recommended dances for your workout:
+    - Electric boogaloo (5 minutes)
+    - Salsa (5 minutes)
+    - Liturgical dance (5 minutes)
+    - Conga line (5 minutes)
+
+<details class="code-fold">
+<summary>Code</summary>
+
+``` python
+print_workout(workout_consecutive_duplicates)
+```
+
+</details>
+
+    Recommended dances for your workout:
+    - Samba enredo (20 minutes)
+
+The output prints each dance with its corresponding duration. For each
+dance in the generated workout, the duration is the same unless the same
+style of dance is twice in a row. Something I would consider in the
+future is letting the user choose the dance duration or letting the
+program select the dance duration based on other factors mentioned in
+the dataset such as Hardness Ratio. In this case, I believe implementing
+something like is out of the scope of the project, however, in the
+future it would be a nice addition.
+
+### AI Disclaimer
+
+Github Copilot was installed in VS Code and utilized in some cases. In
+this project, I used AI to generate various ideas that could be done
+with my selected dataset in python. AI helped generate different ideas
+that fit my interests and what was possible with the dataset. Resources
+such as the course materials and Stack Overflow were the main resources
+that supported my learning in this project.

@@ -7,6 +7,7 @@ format:
         code-fold: true
     gfm:
         code-fold: true
+        fig-format: png
 
 editor: visual
 jupyter: python3

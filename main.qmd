@@ -17,6 +17,12 @@ This dataset obtained from Kaggle contains 207 different styles of dances from a
 ## General Project Structure
 To make this project clear and concise, I have organized it into multiple different parts which are contained into their associated function. The first two steps are to load the dataset and clean it to make it easier to work with. Next to generate the workout planner I created a function that categorizes the tempo (BPM) of the dances into three different groups (Slow, Medium, and Fast). The fourth step is to get the user input while simultaneously filtering the dataset based on the users preferences. The final step is to generate a workout plan based on the filtered dataset and the user preferences. Afterwards, the workout plan is printed while also dealing with consecutive duplicate dances that might occur in the workout.
 
+## Installation of Libraries
+To install the necessary libraries use the following command:
+```{bash}
+python -m pip install -r requirements.txt
+```
+
 ### Loading and Cleaning the Dataset
 
 ```{python}

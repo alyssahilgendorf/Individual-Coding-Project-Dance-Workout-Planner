@@ -1,2 +1,3 @@
 # Individual-Coding-Project-Dance-Workout-Planner
-This repository contains the public data set about dance styles and genre's.
+
+Install libraries with: python -m pip install -r requriments.txt

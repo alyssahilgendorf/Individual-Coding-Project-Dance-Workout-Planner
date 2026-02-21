@@ -12,21 +12,24 @@ def plot_histogramm(df, column, column_name, bins=20):
 
 
 # Bar chart of number of dances per country - change later
-def plot_counts(df, column, column_name, log_scale=True):
+def plot_counts(df, column, column_name, log_scale=False, threshold=None):
     country_counts = df[column].value_counts()
+    country_counts.sort_values(ascending=False, inplace=True)
+    if threshold is not None:
+        country_counts = country_counts.loc[country_counts >= threshold]
     country_counts.plot(kind='bar', color = 'skyblue', edgecolor='blue')
     if log_scale:
         plt.yscale('log')
     plt.title(f"Number of Dances per {column_name}")
     plt.xlabel(column_name)
     plt.ylabel("Number of Dances")
-    plt.xticks(rotation=45)
+    plt.xticks(rotation=45, ha='right')
     plt.tight_layout()
     plt.show()
 
 #visualize the categorization of tempos with histogramm plot with colored background
 def plot_tempo_distribution_with_categories(df, low_cutoff, high_cutoff):
-    plt.figure(figsize=(10, 6))
+    #plt.figure(figsize=(10, 6))
     plt.axvspan(0, low_cutoff, color='cornflowerblue', alpha=0.5, label='Low Tempo')
     plt.axvspan(low_cutoff, high_cutoff, color='mediumseagreen', alpha=0.5, label='Medium Tempo')
     plt.axvspan(high_cutoff, df["Tempo (BPM)"].max(), color='red', alpha=0.5, label='High Tempo')

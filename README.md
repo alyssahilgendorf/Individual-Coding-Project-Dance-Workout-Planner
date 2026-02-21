@@ -403,4 +403,5 @@ this project, I used AI to generate various ideas that could be done
 with my selected dataset in python. AI helped generate different ideas
 that fit my interests and what was possible with the dataset. Resources
 such as the course materials and Stack Overflow were the main resources
-that supported my learning in this project.
+that supported my learning in this project. ChatGPT was used to generate
+code that assisted in the formatting of the qmd and README files.
